@@ -2,7 +2,7 @@
 
 namespace Celica
 {
-    internal static class CelestialParameters
+    public static class CelestialParameters
     {
         public static readonly Pq GravitationalParameterUnits = (Pq.m ^ 3) * (Pq.s ^ -2);
         public static readonly Pq RadiusUnits = Pq.km;

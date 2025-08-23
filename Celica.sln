@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35919.96 d17.13
+VisualStudioVersion = 17.13.35919.96
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Celica", "Celica\Celica.csproj", "{30BB65F6-9520-41C5-8640-F3AE66550F39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwoBody", "TwoBody\TwoBody.csproj", "{A684E62F-2784-4963-9C88-BE8501D1296B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{30BB65F6-9520-41C5-8640-F3AE66550F39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30BB65F6-9520-41C5-8640-F3AE66550F39}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30BB65F6-9520-41C5-8640-F3AE66550F39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A684E62F-2784-4963-9C88-BE8501D1296B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A684E62F-2784-4963-9C88-BE8501D1296B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A684E62F-2784-4963-9C88-BE8501D1296B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A684E62F-2784-4963-9C88-BE8501D1296B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
