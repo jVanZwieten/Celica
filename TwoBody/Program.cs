@@ -1,19 +1,19 @@
 ﻿using Celica;
 
-using units = Celica.PhysicalUnitsF;
+using units = Celica.PhysicalUnits;
 
-const float mu_earth = CelestialParameters.Earth.Mu;
+const float mu_earth = CelestialParametersF.Earth.Mu;
 
 var altitude = 700f * units.km;
-var a = CelestialParameters.Earth.R(altitude);
+var a = CelestialParametersF.Earth.R(altitude);
 var v = TwoBPF.CircularVelocity(a, mu_earth);
 v += 200f;
 
-var xVec_0 = new StateEpoch(
-    new State(a, 0, 0, 0, v, 0),
+var xVec_0 = new StateEpochF(
+    new StateF(a, 0, 0, 0, v, 0),
     0);
 
-Func<State, float, State> dxVec = (state, epoch) => new State(state.Velocity, -mu_earth / MathF.Pow(state.Position.Length(), 3) * state.Position);
+Func<StateF, float, StateF> dxVec = (state, epoch) => new StateF(state.Velocity, -mu_earth / MathF.Pow(state.Position.Length(), 3) * state.Position);
 
 float T = TwoBPF.Period(a, mu_earth);
 

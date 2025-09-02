@@ -15,7 +15,7 @@ namespace Celica
             float r = rVec.Length();
             return -mu / (r * r * r) * rVec;
         }
-        public static Vector3 GravityAcceleration(State state, float mu) => GravityAcceleration(state.Position, mu);
+        public static Vector3 GravityAcceleration(StateF state, float mu) => GravityAcceleration(state.Position, mu);
 
 
         public static Vector3 J2Acceleration(Vector3 xVec, float J2, float mu, float r_equitorial)
@@ -33,6 +33,6 @@ namespace Celica
 
             return factor * new Vector3(a_x, a_y, a_z);
         }
-        public static Vector3 J2Acceleration(State state, float J2, float mu, float r_equitorial) => J2Acceleration(state.Position, J2, mu, r_equitorial);
+        public static Vector3 J2Acceleration(StateF state, float J2, float mu, float r_equitorial) => J2Acceleration(state.Position, J2, mu, r_equitorial);
     }
 }

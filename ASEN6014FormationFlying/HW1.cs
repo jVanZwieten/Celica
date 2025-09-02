@@ -1,38 +1,39 @@
-﻿using System.CodeDom;
+﻿using Celica;
 using System.Numerics;
-
-using Celica;
-using TBP = Celica.TwoBPF;
-using Units = Celica.PhysicalUnitsF;
+using TBP = Celica.TwoBodyProblem;
+using TBPF = Celica.TwoBPF;
+using Units = Celica.PhysicalUnits;
+using UnitsF = Celica.PhysicalUnitsF;
+using Vector = MathNet.Numerics.LinearAlgebra.Double.Vector;
 
 namespace ASEN6014FormationFlying
 {
     internal static class HW1
     {
-        const float mu_earth = CelestialParameters.Earth.Mu;
-        const float J2_earth = CelestialParameters.Earth.J2;
-        const float r_earth = CelestialParameters.Earth.Radius;
+        const float mu_earth = CelestialParametersF.Earth.Mu;
+        const float J2_earth = CelestialParametersF.Earth.J2;
+        const float r_earth = CelestialParametersF.Earth.Radius;
 
         /// <summary>
         /// A satellite is orbiting the Earth with a semi-major axis of 8000 km and an eccentricity of 0.23.  Note that this trajectory will intercept with the Earth.  Determine radius at apoapses, radius at periapses, semi-latus rectum, semi-minor axis and the eccentric anomaly if the true anomaly is 295 degrees.
         /// </summary>
         internal static void Quiz4Problem8()
         {
-            float a = 8000 * Units.km;
+            float a = 8000 * UnitsF.km;
             float e = 0.23f;
-            float nu = 295 * Units.deg;
+            float nu = 295 * UnitsF.deg;
 
-            var r_a = TBP.Apoapsis(a, e);
-            var r_p = TBP.Periapsis(a, e);
-            var p = TBP.SemiLatusRectum(a, e);
-            var b = TBP.SemiMinorAxis(a, e);
-            var E = TBP.EccentricAnomaly(nu, e);
+            var r_a = TBPF.Apoapsis(a, e);
+            var r_p = TBPF.Periapsis(a, e);
+            var p = TBPF.SemiLatusRectum(a, e);
+            var b = TBPF.SemiMinorAxis(a, e);
+            var E = TBPF.EccentricAnomaly(nu, e);
 
-            Console.WriteLine($"Radius at Apoapsis: {r_a / Units.km} km");
-            Console.WriteLine($"Radius at Periapsis: {r_p / Units.km} km");
-            Console.WriteLine($"Semi-latus rectum: {p / Units.km} km");
-            Console.WriteLine($"Semi-minor axis: {b / Units.km} km");
-            Console.WriteLine($"Eccentric Anomaly: {E / Units.deg} deg");
+            Console.WriteLine($"Radius at Apoapsis: {r_a / UnitsF.km} km");
+            Console.WriteLine($"Radius at Periapsis: {r_p / UnitsF.km} km");
+            Console.WriteLine($"Semi-latus rectum: {p / UnitsF.km} km");
+            Console.WriteLine($"Semi-minor axis: {b / UnitsF.km} km");
+            Console.WriteLine($"Eccentric Anomaly: {E / UnitsF.deg} deg");
         }
 
         /// <summary>
@@ -44,19 +45,19 @@ namespace ASEN6014FormationFlying
         /// </summary>
         internal static void Quiz5Problem3()
         {
-            Vector3 rVec_0 = new(2466.69f * Units.km, 5941.54f * Units.km, 3282.71f * Units.km);
-            Vector3 vVec_0 = new(-6.80822f * Units.km, 1.04998f * Units.km, 3.61939f * Units.km);
-            var xVec_0 = new StateEpoch(new State(rVec_0, vVec_0), 0);
+            Vector3 rVec_0 = new(2466.69f * UnitsF.km, 5941.54f * UnitsF.km, 3282.71f * UnitsF.km);
+            Vector3 vVec_0 = new(-6.80822f * UnitsF.km, 1.04998f * UnitsF.km, 3.61939f * UnitsF.km);
+            var xVec_0 = new StateEpochF(new StateF(rVec_0, vVec_0), 0);
 
-            Func<State, float, State> dxVecDt = (state, epoch)
-                => new State(state.Velocity, EquationsOfMotion.GravityAcceleration(state, mu_earth));
+            Func<StateF, float, StateF> dxVecDt = (state, epoch)
+                => new StateF(state.Velocity, EquationsOfMotion.GravityAcceleration(state, mu_earth));
 
-            float t_f = 60 * Units.min;
+            float t_f = 60 * UnitsF.min;
             var trajectory = NumericalMethods.RungeKutta4Integration(dxVecDt, xVec_0, 1f, t_f);
 
             var xVec_f = trajectory[^1];
-            Console.WriteLine($"Final Position Vector: {xVec_f.State.Position / Units.km} km");
-            Console.WriteLine($"Final Velocity Vector: {xVec_f.State.Velocity / Units.km} km");
+            Console.WriteLine($"Final Position Vector: {xVec_f.State.Position / UnitsF.km} km");
+            Console.WriteLine($"Final Velocity Vector: {xVec_f.State.Velocity / UnitsF.km} km");
         }
 
         /// <summary>
@@ -74,28 +75,28 @@ namespace ASEN6014FormationFlying
         /// </summary>
         internal static void Quiz5Problem4()
         {
-            Vector3 rVec_1_0 = new(-6685.20926f * Units.km, 601.51244f * Units.km, 3346.06634f * Units.km);
-            Vector3 vVec_1_0 = new(-1.74294f * Units.km, -6.70242f * Units.km, -2.27739f * Units.km);
-            Vector3 rVec_2_0 = new(-6685.21657f * Units.km, 592.52839f * Units.km, 3345.6716f * Units.km);
-            Vector3 vVec_2_0 = new(-1.74283f * Units.km, -6.70475f * Units.km, -2.27334f * Units.km);
+            Vector3 rVec_1_0 = new(-6685.20926f * UnitsF.km, 601.51244f * UnitsF.km, 3346.06634f * UnitsF.km);
+            Vector3 vVec_1_0 = new(-1.74294f * UnitsF.km, -6.70242f * UnitsF.km, -2.27739f * UnitsF.km);
+            Vector3 rVec_2_0 = new(-6685.21657f * UnitsF.km, 592.52839f * UnitsF.km, 3345.6716f * UnitsF.km);
+            Vector3 vVec_2_0 = new(-1.74283f * UnitsF.km, -6.70475f * UnitsF.km, -2.27334f * UnitsF.km);
 
-            StateEpoch xVec_1_0 = new(new State(rVec_1_0, vVec_1_0), 0);
-            StateEpoch xVec_2_0 = new(new State(rVec_2_0, vVec_2_0), 0);
+            StateEpochF xVec_1_0 = new(new StateF(rVec_1_0, vVec_1_0), 0);
+            StateEpochF xVec_2_0 = new(new StateF(rVec_2_0, vVec_2_0), 0);
 
-            Func<State, float, State> dxVecDt = (state, epoch)
-                => new State(state.Velocity, EquationsOfMotion.GravityAcceleration(state.Position, mu_earth) + EquationsOfMotion.J2Acceleration(state.Position, J2_earth, mu_earth, r_earth));
+            Func<StateF, float, StateF> dxVecDt = (state, epoch)
+                => new StateF(state.Velocity, EquationsOfMotion.GravityAcceleration(state.Position, mu_earth) + EquationsOfMotion.J2Acceleration(state.Position, J2_earth, mu_earth, r_earth));
 
             float t_f = 4848f;
-            var initialStates = new StateEpoch[] { xVec_1_0, xVec_2_0 };
+            var initialStates = new StateEpochF[] { xVec_1_0, xVec_2_0 };
 
             var trajectories = NumericalMethods.RungeKutta4Integration(dxVecDt, initialStates, .1f, t_f);
             var xVec_1_f = trajectories[0][^1];
             var xVec_2_f = trajectories[1][^1];
 
-            Console.WriteLine($"Final Position Vector 1: {xVec_1_f.State.Position / Units.km} km");
-            Console.WriteLine($"Final Velocity Vector 1: {xVec_1_f.State.Velocity / Units.km} km/s");
-            Console.WriteLine($"Final Position Vector 2: {xVec_2_f.State.Position / Units.km} km");
-            Console.WriteLine($"Final Velocity Vector 2: {xVec_2_f.State.Velocity / Units.km} km/s");
+            Console.WriteLine($"Final Position Vector 1: {xVec_1_f.State.Position / UnitsF.km} km");
+            Console.WriteLine($"Final Velocity Vector 1: {xVec_1_f.State.Velocity / UnitsF.km} km/s");
+            Console.WriteLine($"Final Position Vector 2: {xVec_2_f.State.Position / UnitsF.km} km");
+            Console.WriteLine($"Final Velocity Vector 2: {xVec_2_f.State.Velocity / UnitsF.km} km/s");
         }
 
         /// <summary>
@@ -107,11 +108,11 @@ namespace ASEN6014FormationFlying
         /// </summary>
         internal static void Quiz6Problem2()
         {
-            var rVec = new Vector3(2466.69f * Units.km, 5941.54f * Units.km, 3282.71f * Units.km);
-            var vVec = new Vector3(-6.80822f * Units.km, 1.04998f * Units.km, 3.61939f * Units.km);
-            var hVec = TBP.SpecificAngularMomentumVec(rVec, vVec);
+            var rVec = new Vector3(2466.69f * UnitsF.km, 5941.54f * UnitsF.km, 3282.71f * UnitsF.km);
+            var vVec = new Vector3(-6.80822f * UnitsF.km, 1.04998f * UnitsF.km, 3.61939f * UnitsF.km);
+            var hVec = TBPF.SpecificAngularMomentumVec(rVec, vVec);
 
-            Console.WriteLine($"Orbital Angular Momentum Vector: {hVec / (Units.km * Units.km)} km^2/s");
+            Console.WriteLine($"Orbital Angular Momentum Vector: {hVec / (UnitsF.km * UnitsF.km)} km^2/s");
         }
 
         /// <summary>
@@ -123,14 +124,14 @@ namespace ASEN6014FormationFlying
         /// </summary>
         internal static void Quiz6Problem3()
         {
-            var rVec = new Vector3(2466.69f * Units.km, 5941.54f * Units.km, 3282.71f * Units.km);
-            var vVec = new Vector3(-6.80822f * Units.km, 1.04998f * Units.km, 3.61939f * Units.km);
+            var rVec = new Vector3(2466.69f * UnitsF.km, 5941.54f * UnitsF.km, 3282.71f * UnitsF.km);
+            var vVec = new Vector3(-6.80822f * UnitsF.km, 1.04998f * UnitsF.km, 3.61939f * UnitsF.km);
 
-            var h = TBP.SpecificAngularMomentum(rVec, vVec);
-            var r = 8000 * Units.km;
+            var h = TBPF.SpecificAngularMomentum(rVec, vVec);
+            var r = 8000 * UnitsF.km;
 
             var fDot = h / (r * r); // rad/s
-            Console.WriteLine($"True Anomaly Rate: {fDot / Units.deg} deg/s");
+            Console.WriteLine($"True Anomaly Rate: {fDot / UnitsF.deg} deg/s");
         }
 
         /// <summary>
@@ -144,12 +145,12 @@ namespace ASEN6014FormationFlying
         /// </summary>
         internal static void Quiz7Problem2()
         {
-            var rVec_0 = new Vector3(2466.69f * Units.km, 5941.54f * Units.km, 3282.71f * Units.km);
-            var vVec_0 = new Vector3(-6.80822f * Units.km, 1.04998f * Units.km, 3.61939f * Units.km);
-            var vVec_t = new Vector3(5.57433f * Units.km, -0.92203f * Units.km, -3.00873f * Units.km);
+            var rVec_0 = new Vector3(2466.69f * UnitsF.km, 5941.54f * UnitsF.km, 3282.71f * UnitsF.km);
+            var vVec_0 = new Vector3(-6.80822f * UnitsF.km, 1.04998f * UnitsF.km, 3.61939f * UnitsF.km);
+            var vVec_t = new Vector3(5.57433f * UnitsF.km, -0.92203f * UnitsF.km, -3.00873f * UnitsF.km);
 
-            var hVec = TBP.SpecificAngularMomentumVec(rVec_0, vVec_0);
-            var eVec = TBP.Eccentricity(rVec_0, vVec_0, hVec, mu_earth);
+            var hVec = TBPF.SpecificAngularMomentumVec(rVec_0, vVec_0);
+            var eVec = TBPF.Eccentricity(rVec_0, vVec_0, hVec, mu_earth);
 
             var rHat_t = (Vector3.Cross(vVec_t, hVec) / mu_earth - eVec);
 
@@ -164,11 +165,11 @@ namespace ASEN6014FormationFlying
         /// </summary>
         internal static void Quiz8Problem2()
         {
-            var a = 8000f * Units.km;
-            var vVec = new Vector3(-6.80822f * Units.km, 1.04998f * Units.km, 3.61939f * Units.km);
-            var r = TBP.OrbitRadius(a, vVec.Length(), mu_earth);
+            var a = 8000f * UnitsF.km;
+            var vVec = new Vector3(-6.80822f * UnitsF.km, 1.04998f * UnitsF.km, 3.61939f * UnitsF.km);
+            var r = TBPF.OrbitRadius(a, vVec.Length(), mu_earth);
 
-            Console.WriteLine($"Orbit radius r_t: {r / Units.km} km");
+            Console.WriteLine($"Orbit radius r_t: {r / UnitsF.km} km");
         }
 
         /// <summary>
@@ -178,21 +179,64 @@ namespace ASEN6014FormationFlying
         /// </summary>
         internal static void Quiz9Problem3()
         {
-            var a = 7500f * Units.km;
-            var e = .05f;
-            var nu_0 = 25f * Units.deg;
+            var a = 7500 * Units.km;
+            var e = .05;
+            var ν_0 = 25 * Units.deg;
             var t_f = 1 * Units.hour;
 
-            var n = TBP.MeanOrbit(a, mu_earth);
+            var M_0 = TBP.MeanFromTrueAnomaly(ν_0, e);
+            var M_f = TBP.MeanAnomaly(M_0, t_f, a, mu_earth);
 
-            var E_0 = TBP.EccentricAnomaly(nu_0, e);
-            var M_0 = TBP.MeanAnomaly(E_0, e);
+            var ν_f = TBP.TrueFromMeanAnomaly(M_f, e);
 
-            var M_f = TBP.MeanAnomalyAfterTime(M_0, t_f, n);
-            var E_f = TBP.EccentricFromMeanAnomaly(M_f, e);
-            var nu_f = TBP.TrueAnomaly(E_f, e);
+            Console.WriteLine($"True Anomaly f(t_f): {ν_f} rads");
+        }
 
-            Console.WriteLine($"True Anomaly f(t_f): {nu_f / Units.deg} deg");
+        /// <summary>
+        /// Write a subroutine to convert the following elements and true anomaly to the equivalent inertial position and velocity vector states.  The method inputs should be
+        /// μ,a,e,i,Ω,ω,f
+        /// To validate the conversion from orbit elements to cartesian states is working, input below the response for a case where an Earth orbiting satellite has a=8000 km, e = .1, i = 30 degrees, Ω = 145 degrees, ω = 120 degrees, and M(t_0) = 10deg. Find the oe states one hour later and determine the corresponding inertial position and velocity vector.
+        /// </summary>
+        internal static void Quiz10Problem6()
+        {
+            var a = 8000d * Units.km;
+            var e = .1;
+            var i = 30d * Units.deg;
+            var Ω = 145d * Units.deg;
+            var ω = 120d * Units.deg;
+            var M_0 = 10d * Units.deg;
+            var deltaT = 1d * Units.hour;
+
+            var M_f = TBP.MeanAnomaly(M_0, deltaT, a, mu_earth);
+            var ν_f = TBP.TrueFromMeanAnomaly(M_f, e);
+
+            var state_f = TBP.StateVector(a, e, i, Ω, ω, ν_f, mu_earth);
+
+            Console.WriteLine($"Position Vector at t_f: [{state_f.X / Units.km}, {state_f.Y / Units.km}, {state_f.Z / Units.km}] km");
+            Console.WriteLine($"Velocity Vector at t_f: [{state_f.V_x / Units.km}, {state_f.V_y / Units.km}, {state_f.V_z / Units.km}] km");
+        }
+
+        /// <summary>
+        /// Write a subroutine to convert the inertial position and velocity vector components to the corresponding classical orbit elements.  The subroutine inputs should be
+        /// mu, Nr, Nv
+        /// To test the subroutine, assume the satellite is orbiting the Earth with the current inertial states
+        /// NrVec = (−820.865,−1905.95,−7445.9) km
+        /// NvVec = (−6.75764,−1.85916,0.930651) km/sec
+        /// </summary>
+        internal static void Quiz10Problem7()
+        {
+            Vector rVec = (Vector)Vector.Build.Dense([-820.865 * Units.km, -1905.95 * Units.km, -7445.9 * Units.km]);
+            Vector vVec = (Vector)Vector.Build.Dense([-6.75764 * Units.km, -1.85916 * Units.km, 0.930651 * Units.km]);
+            State state = new State(rVec, vVec);
+
+            var elements = TBP.ClassicalElementsFromState(state, mu_earth);
+
+            Console.WriteLine($"Semi-major axis a: {elements.a / Units.km} km");
+            Console.WriteLine($"Eccentricity e: {elements.e}");
+            Console.WriteLine($"Inclination i: {elements.i} rad");
+            Console.WriteLine($"Right Ascension of Ascending Node Ω: {elements.Ω - 2 * Math.PI} rad");
+            Console.WriteLine($"Argument of Periapsis ω: {elements.ω} rad");
+            Console.WriteLine($"True Anomaly f: {elements.υ} rad");
         }
     }
 }

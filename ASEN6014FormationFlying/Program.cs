@@ -22,4 +22,10 @@
 Console.WriteLine("\nQuiz 9 problem 3:");
 HW1.Quiz9Problem3();
 
+//Console.WriteLine("\nQuiz 10 problem 6:");
+//HW1.Quiz10Problem6();
+
+//Console.WriteLine("\nQuiz 10 problem 7:");
+//HW1.Quiz10Problem7();
+
 Console.ReadLine();

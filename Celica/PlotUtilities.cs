@@ -10,12 +10,12 @@ namespace Celica
 {
     public static class PlotUtilities
     {
-        public static void Plot2D(IEnumerable<StateEpoch> trajectory)
+        public static void Plot2D(IEnumerable<StateEpochF> trajectory)
         {
             Plot2D(trajectory.Select(se => se.State));
         }
 
-        public static void Plot2D(IEnumerable<State> trajectory)
+        public static void Plot2D(IEnumerable<StateF> trajectory)
         {
             var xData = trajectory.Select(state => state.X).ToArray();
             var yData = trajectory.Select(state => state.Y).ToArray();
