@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
+﻿using System.Numerics;
 
 namespace Celica
 {
@@ -15,10 +9,12 @@ namespace Celica
 
         public static float SpecificAngularMomentum(float p, float mu) => MathF.Sqrt(mu * p);
         public static float SpecificAngularMomentum(float a, float e, float mu) => MathF.Sqrt(mu * a * (1 - e * e));
-        public static Vector3 SpecificAngularMomentum(Vector3 r, Vector3 v) => Vector3.Cross(r, v);
+        public static Vector3 SpecificAngularMomentumVec(Vector3 r, Vector3 v) => Vector3.Cross(r, v);
+        public static float SpecificAngularMomentum(Vector3 r, Vector3 v) => SpecificAngularMomentumVec(r, v).Length();
         public static float SpecificAngularMomentumFPA(float r, float v, float phi = 0) => r * v * MathF.Cos(phi);
 
         public static float SemiMajorAxis(float r_a, float r_p) => (r_a + r_p) / 2;
+        public static float SemiMinorAxis(float a, float e) => a * MathF.Sqrt(1 - e * e);
 
         public static float Eccentricity(float r_a, float r_p) => (r_a - r_p) / (r_a + r_p);
         public static float Eccentricity(float energy, float h, float mu) => MathF.Sqrt(1 + 2 * energy * h * h / (mu * mu));
@@ -37,6 +33,37 @@ namespace Celica
             return Vector3.Cross(vVec, hVec) / mu - rVec / r;
         }
 
+        public static float EccentricAnomaly(float nu, float e)
+        {
+            var cosE = e + Math.Cos(nu);
+            var sinE = Math.Sqrt(1 - e * e) * Math.Sin(nu);
+            return Utiltiies.NormalizeAngleZeroToTwoPi((float)Math.Atan2(sinE, cosE));
+        }
+        public static float EccentricFromMeanAnomaly(float M, float e, float tolerance = 1e-6f, int maxIterations = 100)
+        {
+            M = Utiltiies.NormalizeAngleZeroToTwoPi(M);
+            float E = M; // Initial guess
+            for (int i = 0; i < maxIterations; i++)
+            {
+                float f = E - e * MathF.Sin(E) - M;
+                float fPrime = 1 - e * MathF.Cos(E);
+                float deltaE = -f / fPrime;
+                E += deltaE;
+                if (MathF.Abs(deltaE) < tolerance)
+                    return Utiltiies.NormalizeAngleZeroToTwoPi(E);
+            }
+            throw new Exception("EccentricAnomaly: Newton-Raphson method did not converge.");
+        }
+        public static float MeanAnomaly(float E, float e) => E - e * MathF.Sin(E);
+        public static float MeanAnomalyAfterTime(float M0, float dt, float n) => M0 + n * dt;
+        public static float MeanOrbit(float a, float mu) => MathF.Sqrt(mu / (a * a * a));
+        public static float TrueAnomaly(float E, float e)
+        {
+            var cosNu = (MathF.Cos(E) - e) / (1 - e * MathF.Cos(E));
+            var sinNu = (MathF.Sqrt(1 - e * e) * MathF.Sin(E)) / (1 - e * MathF.Cos(E));
+            return Utiltiies.NormalizeAngleZeroToTwoPi(MathF.Atan2(sinNu, cosNu));
+        }
+
         public static float SemiLatusRectum(float a, float e) => a * (1 - e * e);
         public static float SemiLatusRectumAM(float h, float mu) => h * h / mu;
 
@@ -47,6 +74,8 @@ namespace Celica
         public static float ApoapsisSLA(float p, float e) => p / (1 - e);
         public static float Periapsis(float a, float e) => a * (1 - e);
         public static float PeriapsisSLA(float p, float e) => p / (1 + e);
+
+        public static float OrbitRadius(float a, float v, float mu) => 1 / (v * v / (2 * mu) + 1 / (2 * a));
 
         /// <summary>
         /// Calculate the velocity in the Perifocal Frame (planar) from ground station observations.

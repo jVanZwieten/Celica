@@ -7,5 +7,7 @@
         public const float min = 60f;
         public const float hour = 60f * min;
         public const float day = 24f * hour;
+
+        public const float deg = MathF.PI / 180f;
     }
 }

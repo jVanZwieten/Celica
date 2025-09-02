@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Celica", "Celica\Celica.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwoBody", "TwoBody\TwoBody.csproj", "{A684E62F-2784-4963-9C88-BE8501D1296B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASEN6014FormationFlying", "ASEN6014FormationFlying\ASEN6014FormationFlying.csproj", "{646C9E15-6A9D-42C4-B0B2-3417E8D3667A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{A684E62F-2784-4963-9C88-BE8501D1296B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A684E62F-2784-4963-9C88-BE8501D1296B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A684E62F-2784-4963-9C88-BE8501D1296B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{646C9E15-6A9D-42C4-B0B2-3417E8D3667A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{646C9E15-6A9D-42C4-B0B2-3417E8D3667A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{646C9E15-6A9D-42C4-B0B2-3417E8D3667A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{646C9E15-6A9D-42C4-B0B2-3417E8D3667A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
