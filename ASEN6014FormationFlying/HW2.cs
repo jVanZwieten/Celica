@@ -9,7 +9,7 @@ namespace ASEN6014FormationFlying
     {
         const double muEarth = CelestialParameters.Earth.Mu;
 
-        internal static void Mod2Quiz3Prob1()
+        internal static void Mod3Quiz3Prob1()
         {
             Vector NrVec_c = DenseVector.OfArray([-4893.268, 3864.478, 3169.646]) * Units.km;
             Vector NvVec_c = DenseVector.OfArray([-3.91386, -6.257673, 1.59797]) * Units.km;
@@ -25,7 +25,7 @@ namespace ASEN6014FormationFlying
             Console.WriteLine(relState_deputy / Units.km);
         }
 
-        internal static void Mod2Quiz3Prob2()
+        internal static void Mod3Quiz3Prob2()
         {
             Vector NrVec_c = DenseVector.OfArray([-4893.268, 3864.478, 3169.646]) * Units.km;
             Vector NvVec_c = DenseVector.OfArray([-3.91386, -6.257673, 1.59797]) * Units.km;
@@ -39,6 +39,35 @@ namespace ASEN6014FormationFlying
             State Nstate_deputy = RelativeMotion.InertialState(state_chief, relState_deputy);
             Console.WriteLine($"Inertial State Deputy (km, km/s):");
             Console.WriteLine(Nstate_deputy / Units.km);
+        }
+
+        internal static void Mod3Quiz3Prob3()
+        {
+            var x = 10 * Units.km;
+            var y = 500 * Units.km;
+            var r = 7000 * Units.km;
+            var xDot = .1 * Units.km;
+            var yDot = -.1 * Units.km;
+            var rDot = .05 * Units.km;
+
+            var Ostate_deputyCurvilinear = RelativeMotion.RectiToCurvilinear(r, new State(x, y, 0, xDot, yDot, 0));
+            Console.WriteLine($"Curvilinear Relative State Deputy (km, km/s):");
+            Console.WriteLine(Ostate_deputyCurvilinear / Units.km);
+        }
+
+        internal static void Mod3Quiz3Prob4()
+        {
+            var dr = 10 * Units.km;
+            var s = 500 * Units.km;
+            var r = 7000 * Units.km;
+            var drDot = .1 * Units.km;
+            var sDot = -.1 * Units.km;
+            var rDot = .05 * Units.km;
+
+            var Ostate_deputyCurvilinear = new State(dr, s, 0, drDot, sDot, 0);
+            var Ostate_deputyRectilinear = RelativeMotion.CurviToRectilinear(r, Ostate_deputyCurvilinear);
+            Console.WriteLine($"Rectilinear Relative State Deputy (km, km/s):");
+            Console.WriteLine(Ostate_deputyRectilinear / Units.km);
         }
     }
 }

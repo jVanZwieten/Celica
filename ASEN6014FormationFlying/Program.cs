@@ -28,10 +28,16 @@
 //Console.WriteLine("\nQuiz 10 problem 7:");
 //HW1.Quiz10Problem7();
 
-Console.WriteLine("\nModule 2 Quiz 3 Problem 1:");
-HW2.Mod2Quiz3Prob1();
+//Console.WriteLine("\nModule 2 Quiz 3 Problem 1:");
+//HW2.Mod3Quiz3Prob1();
 
-Console.WriteLine("\nModule 2 Quiz 3 Problem 2:");
-HW2.Mod2Quiz3Prob2();
+//Console.WriteLine("\nModule 2 Quiz 3 Problem 2:");
+//HW2.Mod3Quiz3Prob2();
+
+//Console.WriteLine("\nModule 2 Quiz 3 Problem 3:");
+//HW2.Mod3Quiz3Prob3();
+
+Console.WriteLine("\nModule 2 Quiz 3 Problem 4:");
+HW2.Mod3Quiz3Prob4();
 
 Console.ReadLine();

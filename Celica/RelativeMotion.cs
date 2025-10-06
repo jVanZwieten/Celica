@@ -58,5 +58,53 @@ namespace Celica
             Vector NvVec_deputy = InertialVelocity(Nstate_chief.Velocity, Ostate_deputy, OomegaVec_ON, NO);
             return new State(NrVec_deputy, NvVec_deputy);
         }
+
+        public static State RectiToCurvilinear(double r_c, State Ostate_deputy)
+        {
+            var x = Ostate_deputy.X;
+            var y = Ostate_deputy.Y;
+            var z = Ostate_deputy.Z;
+            var xDot = Ostate_deputy.V_x;
+            var yDot = Ostate_deputy.V_y;
+            var zDot = Ostate_deputy.V_z;
+
+            var r_dSquared = Math.Pow(r_c + x, 2) + Math.Pow(y, 2);
+            var r_d = Math.Sqrt(r_dSquared);
+
+            var dr = r_d - r_c;
+            var dTheta = Math.Atan2(y, r_c + x);
+            var s = r_c * dTheta;
+            var OrhoVec = new DenseVector([dr, s, z]);
+
+            var drDot = ((r_c + x) * xDot + y * yDot) / r_d;
+            var dThetaDot = ((r_c + x) * yDot - y * xDot) / r_dSquared;
+            var sDot = r_c * dThetaDot;
+            var OrhoDotVec = new DenseVector([drDot, sDot, zDot]);
+
+            return new State(OrhoVec, OrhoDotVec);
+        }
+
+        public static State CurviToRectilinear(double r_chief, State Ostate_deputyCurvilinear)
+        {
+            var dr = Ostate_deputyCurvilinear.X;
+            var s = Ostate_deputyCurvilinear.Y;
+            var z = Ostate_deputyCurvilinear.Z;
+
+            var drDot = Ostate_deputyCurvilinear.V_x;
+            var sDot = Ostate_deputyCurvilinear.V_y;
+            var zDot = Ostate_deputyCurvilinear.V_z;
+
+            var r_deputy = r_chief + dr;
+            var dTheta = s / r_chief;
+            var dThetaDot = sDot / r_chief;
+            var cosTheta = Math.Cos(dTheta);
+            var sinTheta = Math.Sin(dTheta);
+
+            var x = r_deputy * cosTheta - r_chief;
+            var y = r_deputy * sinTheta;
+            var xDot = drDot * cosTheta - r_deputy * sinTheta * dThetaDot;
+            var yDot = drDot * sinTheta + r_deputy * cosTheta * dThetaDot;
+            return new State(x, y, z, xDot, yDot, zDot);
+        }
     }
 }
