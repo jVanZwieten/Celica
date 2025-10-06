@@ -17,6 +17,6 @@ Func<StateF, float, StateF> dxVec = (state, epoch) => new StateF(state.Velocity,
 
 float T = TwoBPF.Period(a, mu_earth);
 
-var trajectory = NumericalMethods.RungeKutta4Integration(dxVec, xVec_0, .01f, T);
+var trajectory = NumericalMethodsF.RungeKutta4Integration(dxVec, xVec_0, .01f, T);
 
 PlotUtilities.Plot2D(trajectory);

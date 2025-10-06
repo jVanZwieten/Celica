@@ -53,7 +53,7 @@ namespace ASEN6014FormationFlying
                 => new StateF(state.Velocity, EquationsOfMotion.GravityAcceleration(state, mu_earth));
 
             float t_f = 60 * UnitsF.min;
-            var trajectory = NumericalMethods.RungeKutta4Integration(dxVecDt, xVec_0, 1f, t_f);
+            var trajectory = NumericalMethodsF.RungeKutta4Integration(dxVecDt, xVec_0, 1f, t_f);
 
             var xVec_f = trajectory[^1];
             Console.WriteLine($"Final Position Vector: {xVec_f.State.Position / UnitsF.km} km");
@@ -89,7 +89,7 @@ namespace ASEN6014FormationFlying
             float t_f = 4848f;
             var initialStates = new StateEpochF[] { xVec_1_0, xVec_2_0 };
 
-            var trajectories = NumericalMethods.RungeKutta4Integration(dxVecDt, initialStates, .1f, t_f);
+            var trajectories = NumericalMethodsF.RungeKutta4Integration(dxVecDt, initialStates, .1f, t_f);
             var xVec_1_f = trajectories[0][^1];
             var xVec_2_f = trajectories[1][^1];
 

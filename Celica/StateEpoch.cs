@@ -2,7 +2,7 @@
 
 namespace Celica
 {
-    public struct StateEpoch(State state, double epoch)
+    public readonly struct StateEpoch(State state, double epoch)
     {
         public double Epoch { get; } = epoch;
         public State State { get; } = state;
@@ -12,6 +12,8 @@ namespace Celica
         public double V_x => State.V_x;
         public double V_y => State.V_y;
         public double V_z => State.V_z;
+
+        public static implicit operator State(StateEpoch a) => a.State;
     }
 
     public struct State(Vector position, Vector velocity)
@@ -28,6 +30,7 @@ namespace Celica
         public static State operator +(State a, State b) => new State((Vector)(a.Position + b.Position), (Vector)(a.Velocity + b.Velocity));
         public static State operator *(double scalar, State a) => new State((Vector)(scalar * a.Position), (Vector)(scalar * a.Velocity));
         public static State operator *(State a, double scalar) => scalar * a;
-        public override string ToString() => $"[{X}; {Y}; {Z}; {V_x}; {V_y}; {V_z}]";
+        public static State operator /(State a, double scalar) => (1.0 / scalar) * a;
+        public override string ToString() => $"[{X}, {Y}, {Z}, {V_x}, {V_y}, {V_z}]";
     }
 }
