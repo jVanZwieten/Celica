@@ -4,6 +4,13 @@ namespace Celica
 {
     public static class TwoBodyProblem
     {
+        public static double SemiLatusRectum(double a, double e) => a * (1 - e * e);
+        public static double RConic(double e, double p, double ν) => p / (1 + e * Math.Cos(ν));
+        public static double SpecificAngularMomentum(double p, double μ) => Math.Sqrt(μ * p);
+
+        public static double CirucularVelocity(double r, double μ) => Math.Sqrt(μ / r);
+
+
         public static State StateVector(double a, double e, double i, double Ω, double ω, double ν, double μ)
         {
             double p = SemiLatusRectum(a, e);
@@ -28,9 +35,8 @@ namespace Celica
 
             return new State(rVec_inertial, vVec_inertial);
         }
-
-        public static double SemiLatusRectum(double a, double e) => a * (1 - e * e);
-        public static double RConic(double e, double p, double ν) => p / (1 + e * Math.Cos(ν));
+        public static State StateVector(ClassicalElementSet elements, double μ) =>
+            StateVector(elements.a, elements.e, elements.i, elements.Ω, elements.ω, elements.υ, μ);
 
         public static Matrix DirectionCosineMatrixPerifocalToInertial(double Ω, double i, double ω)
         {
@@ -49,6 +55,7 @@ namespace Celica
             });
         }
 
+        public static double Period(double a, double μ) => 2 * Math.PI * Math.Sqrt(a * a * a / μ);
         public static double MeanMotion(double a, double μ) => Math.Sqrt(μ / (a * a * a));
         public static double MeanAnomaly(double M, double dt, double n) => M + n * dt;
         public static double MeanAnomaly(double M, double dt, double a, double μ) => MeanAnomaly(M, dt, MeanMotion(a, μ));
@@ -86,10 +93,10 @@ namespace Celica
         public static double TrueFromMeanAnomaly(double M, double e, double tolerance = 1e-10, int maxIterations = 100)
         {
             double E = EccentricFromMeanAnomaly(M, e, tolerance, maxIterations);
-            return Utiltiies.NormalizeAngleZeroToTwoPi(TrueFromEccentricAnomaly(E, e));
+            return Utilities.NormalizeAngleZeroToTwoPi(TrueFromEccentricAnomaly(E, e));
         }
 
-        public static ClassicElements ClassicalElementsFromState(State state, double μ)
+        public static ClassicalElementSet ClassicalElementsFromState(State state, double μ)
         {
             Vector rVec = state.Position;
             double r = rVec.L2Norm();
@@ -117,7 +124,8 @@ namespace Celica
 
             var ν = Math.Acos(eVec.DotProduct(rVec) / (e * r));
 
-            return new ClassicElements(a, e, i, Ω, ω, ν);
+            return new ClassicalElementSet(a, e, i, Ω, ω, ν);
         }
+
     }
 }

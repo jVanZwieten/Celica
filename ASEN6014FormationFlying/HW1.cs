@@ -50,7 +50,7 @@ namespace ASEN6014FormationFlying
             var xVec_0 = new StateEpochF(new StateF(rVec_0, vVec_0), 0);
 
             Func<StateF, float, StateF> dxVecDt = (state, epoch)
-                => new StateF(state.Velocity, EquationsOfMotion.GravityAcceleration(state, mu_earth));
+                => new StateF(state.Velocity, EquationsOfMotionF.GravityAcceleration(state, mu_earth));
 
             float t_f = 60 * UnitsF.min;
             var trajectory = NumericalMethodsF.RungeKutta4Integration(dxVecDt, xVec_0, 1f, t_f);
@@ -84,7 +84,7 @@ namespace ASEN6014FormationFlying
             StateEpochF xVec_2_0 = new(new StateF(rVec_2_0, vVec_2_0), 0);
 
             Func<StateF, float, StateF> dxVecDt = (state, epoch)
-                => new StateF(state.Velocity, EquationsOfMotion.GravityAcceleration(state.Position, mu_earth) + EquationsOfMotion.J2Acceleration(state.Position, J2_earth, mu_earth, r_earth));
+                => new StateF(state.Velocity, EquationsOfMotionF.GravityAcceleration(state.Position, mu_earth) + EquationsOfMotionF.J2Acceleration(state.Position, J2_earth, mu_earth, r_earth));
 
             float t_f = 4848f;
             var initialStates = new StateEpochF[] { xVec_1_0, xVec_2_0 };

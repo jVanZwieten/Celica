@@ -37,11 +37,11 @@ namespace Celica
         {
             var cosE = e + Math.Cos(nu);
             var sinE = Math.Sqrt(1 - e * e) * Math.Sin(nu);
-            return Utiltiies.NormalizeAngleZeroToTwoPiF((float)Math.Atan2(sinE, cosE));
+            return Utilities.NormalizeAngleZeroToTwoPiF((float)Math.Atan2(sinE, cosE));
         }
         public static float EccentricFromMeanAnomaly(float M, float e, float tolerance = 1e-6f, int maxIterations = 100)
         {
-            M = Utiltiies.NormalizeAngleZeroToTwoPiF(M);
+            M = Utilities.NormalizeAngleZeroToTwoPiF(M);
             float E = M; // Initial guess
             for (int i = 0; i < maxIterations; i++)
             {
@@ -50,7 +50,7 @@ namespace Celica
                 float deltaE = -f / fPrime;
                 E += deltaE;
                 if (MathF.Abs(deltaE) < tolerance)
-                    return Utiltiies.NormalizeAngleZeroToTwoPiF(E);
+                    return Utilities.NormalizeAngleZeroToTwoPiF(E);
             }
             throw new Exception("EccentricAnomaly: Newton-Raphson method did not converge.");
         }
@@ -61,7 +61,7 @@ namespace Celica
         {
             var cosNu = (MathF.Cos(E) - e) / (1 - e * MathF.Cos(E));
             var sinNu = (MathF.Sqrt(1 - e * e) * MathF.Sin(E)) / (1 - e * MathF.Cos(E));
-            return Utiltiies.NormalizeAngleZeroToTwoPiF(MathF.Atan2(sinNu, cosNu));
+            return Utilities.NormalizeAngleZeroToTwoPiF(MathF.Atan2(sinNu, cosNu));
         }
 
         public static float SemiLatusRectum(float a, float e) => a * (1 - e * e);

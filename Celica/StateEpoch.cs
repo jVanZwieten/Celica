@@ -2,7 +2,7 @@
 
 namespace Celica
 {
-    public readonly struct StateEpoch(State state, double epoch)
+    public readonly struct StateEpoch(State state, double epoch = 0)
     {
         public double Epoch { get; } = epoch;
         public State State { get; } = state;
@@ -26,8 +26,10 @@ namespace Celica
         public double V_x => Velocity[0];
         public double V_y => Velocity[1];
         public double V_z => Velocity[2];
+        public State() : this(new DenseVector([0.0, 0.0, 0.0]), new DenseVector([0.0, 0.0, 0.0])) { }
         public State(double x, double y, double z, double v_x, double v_y, double v_z) : this(new DenseVector([x, y, z]), new DenseVector([v_x, v_y, v_z])) { }
         public static State operator +(State a, State b) => new State((Vector)(a.Position + b.Position), (Vector)(a.Velocity + b.Velocity));
+        public static State operator -(State a, State b) => new State((Vector)(a.Position - b.Position), (Vector)(a.Velocity - b.Velocity));
         public static State operator *(double scalar, State a) => new State((Vector)(scalar * a.Position), (Vector)(scalar * a.Velocity));
         public static State operator *(State a, double scalar) => scalar * a;
         public static State operator /(State a, double scalar) => (1.0 / scalar) * a;
