@@ -36,7 +36,7 @@ namespace Celica
             return new State(rVec_inertial, vVec_inertial);
         }
         public static State StateVector(ClassicalElementSet elements, double μ) =>
-            StateVector(elements.a, elements.e, elements.i, elements.Ω, elements.ω, elements.υ, μ);
+            StateVector(elements.a, elements.e, elements.i, elements.Omega, elements.omega, elements.nu, μ);
 
         public static Matrix DirectionCosineMatrixPerifocalToInertial(double Ω, double i, double ω)
         {

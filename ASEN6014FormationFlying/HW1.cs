@@ -234,9 +234,9 @@ namespace ASEN6014FormationFlying
             Console.WriteLine($"Semi-major axis a: {elements.a / Units.km} km");
             Console.WriteLine($"Eccentricity e: {elements.e}");
             Console.WriteLine($"Inclination i: {elements.i} rad");
-            Console.WriteLine($"Right Ascension of Ascending Node Ω: {elements.Ω - 2 * Math.PI} rad");
-            Console.WriteLine($"Argument of Periapsis ω: {elements.ω} rad");
-            Console.WriteLine($"True Anomaly f: {elements.υ} rad");
+            Console.WriteLine($"Right Ascension of Ascending Node Ω: {elements.Omega - 2 * Math.PI} rad");
+            Console.WriteLine($"Argument of Periapsis ω: {elements.omega} rad");
+            Console.WriteLine($"True Anomaly f: {elements.nu} rad");
         }
     }
 }

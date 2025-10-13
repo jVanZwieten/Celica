@@ -5,33 +5,33 @@
         public double a { get; } = a;
         public double e { get; } = e;
         public double i { get; } = i;
-        public double Ω { get; } = Ω;
-        public double ω { get; } = ω;
-        public double υ { get; } = υ;
+        public double Omega { get; } = Ω;
+        public double omega { get; } = ω;
+        public double nu { get; } = υ;
 
         public ClassicalElementSet(ClassicalElementSet referenceElset, double δa = 0, double δe = 0, double δi = 0, double δΩ = 0, double δω = 0, double δυ = 0) :
-            this(referenceElset.a + δa, referenceElset.e + δe, referenceElset.i + δi, referenceElset.Ω + δΩ, referenceElset.ω + δω, referenceElset.υ + δυ)
+            this(referenceElset.a + δa, referenceElset.e + δe, referenceElset.i + δi, referenceElset.Omega + δΩ, referenceElset.omega + δω, referenceElset.nu + δυ)
         { }
 
         public static ClassicalElementSet operator +(ClassicalElementSet left, ClassicalElementSet right) => new ClassicalElementSet(
                 left.a + right.a,
                 left.e + right.e,
                 left.i + right.i,
-                left.Ω + right.Ω,
-                left.ω + right.ω,
-                left.υ + right.υ
+                left.Omega + right.Omega,
+                left.omega + right.omega,
+                left.nu + right.nu
             );
 
         public static ClassicalElementSet operator /(ClassicalElementSet elset, double scalar) => new ClassicalElementSet(
                 elset.a / scalar,
                 elset.e / scalar,
                 elset.i / scalar,
-                elset.Ω / scalar,
-                elset.ω / scalar,
-                elset.υ / scalar
+                elset.Omega / scalar,
+                elset.omega / scalar,
+                elset.nu / scalar
             );
 
-        public override string ToString() => $"[{a}; {e}; {i}; {Ω}; {ω}; {υ}]";
+        public override string ToString() => $"[{a}; {e}; {i}; {Omega}; {omega}; {nu}]";
     }
 
     public struct ClassicalElementSetMeanAnomaly(double a, double e, double i, double Omega, double omega, double M)

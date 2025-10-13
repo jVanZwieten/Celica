@@ -7,7 +7,7 @@ const float mu_earth = CelestialParametersF.Earth.Mu;
 var altitude = 700f * units.km;
 var a = CelestialParametersF.Earth.R(altitude);
 var v = TwoBPF.CircularVelocity(a, mu_earth);
-v += 200f;
+//v += 200f;
 
 var xVec_0 = new StateEpochF(
     new StateF(a, 0, 0, 0, v, 0),
@@ -19,4 +19,5 @@ float T = TwoBPF.Period(a, mu_earth);
 
 var trajectory = NumericalMethodsF.RungeKutta4Integration(dxVec, xVec_0, .01f, T);
 
-PlotUtilities.Plot2D(trajectory);
+var sampledTrajectory = trajectory.Where((_, idx) => (idx + 100) % 100 == 0).ToArray();
+PlotUtilitiesF.Plot2D(sampledTrajectory);

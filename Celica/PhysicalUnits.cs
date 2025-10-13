@@ -1,5 +1,13 @@
 ﻿namespace Celica
 {
+    /// <summary>
+    /// All units used within Celica are standard SI base units:
+    /// length: meter (m)
+    /// time: second (s)
+    /// mass: kilogram (kg)
+    /// 
+    /// and their derived units. Angles are in radians. It is up to the user to convert all inputs to these standard units, and convert outputs back to whichever units desired. The PhysicalUnits class provides conversion factors to make converting trivial and readable.
+    /// </summary>
     public static class PhysicalUnits
     {
         public const double km = 1e3;

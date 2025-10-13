@@ -267,8 +267,8 @@ namespace Celica
             double a = chiefElset.a;
             double e = chiefElset.e;
             double i = chiefElset.i;
-            double f = chiefElset.υ;
-            double theta = f + chiefElset.ω;
+            double f = chiefElset.nu;
+            double theta = f + chiefElset.omega;
 
             double dela = deputyDifferentialElset.a;
             double delM = deputyDifferentialElset.M;
