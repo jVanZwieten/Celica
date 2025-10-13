@@ -91,7 +91,7 @@ static StateEpoch[][] PropagateDeputyCwTrajectories(double INTEGRATION_DT, int S
     PrintStateDeltas(Ostate_deputy3_0, cwTrajectory_deputy3.Last().State);
 
     StateEpoch[][] trajectories = [cwTrajectory_deputy1, cwTrajectory_deputy2, cwTrajectory_deputy3];
-    PlotUtilities.Plot2D(trajectories, sampleInterval: SAMPLE_INTERVAL, title: "CW propagation of deputies about chief");
+    PlotUtilities.Plot2D(trajectories, sampleInterval: SAMPLE_INTERVAL, title: "CW propagation of deputies about chief", seriesNames: ["Deputy1", "Deputy2", "Deputy3"]);
     return trajectories;
 }
 

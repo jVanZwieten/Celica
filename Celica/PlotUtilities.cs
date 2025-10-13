@@ -1,4 +1,5 @@
 ﻿using ScottPlot;
+using ScottPlot.Plottables;
 using ScottPlot.WinForms;
 
 namespace Celica
@@ -9,26 +10,30 @@ namespace Celica
 
         static Func<State, int, bool> SampledIndex(int sampleInterval, int length) => (State state, int index) => index % sampleInterval == 0 || index == length - 1;
 
-        public static void Plot2D(IEnumerable<IEnumerable<State>> trajectories, Plot? plot = null, int? sampleInterval = null, string? title = null)
+        public static void Plot2D(IEnumerable<IEnumerable<State>> trajectories, Plot? plot = null, int? sampleInterval = null, string? title = null, string[]? seriesNames = null)
         {
             plot ??= new Plot();
             plot.Axes.SquareUnits();
             plot.Add.Palette = new ScottPlot.Palettes.Nord();
 
             int i_series = 0;
+            Marker initialMarker = new();
             foreach (var trajectory in trajectories)
             {
                 var sampledTrajectory = sampleInterval.HasValue ? trajectory.Where(SampledIndex(sampleInterval.Value, trajectory.Count())) : trajectory;
                 var xData = sampledTrajectory.Select(state => state.X).ToArray();
                 var yData = sampledTrajectory.Select(state => state.Y).ToArray();
                 var series = plot.Add.Scatter(xData, yData);
-                series.LegendText = $"Trajectory {i_series++}";
+                if (seriesNames is not null && i_series < seriesNames.Length)
+                    series.LegendText = seriesNames[i_series++];
                 series.MarkerStyle = MarkerStyle.None;
                 series.LineWidth = 2;
 
-                plot.Add.Marker(sampledTrajectory.First().X, sampledTrajectory.First().Y, color: startMarkerColor);
+                initialMarker = plot.Add.Marker(sampledTrajectory.First().X, sampledTrajectory.First().Y, color: startMarkerColor);
             }
-            plot.ShowLegend(Alignment.MiddleRight);
+
+            initialMarker.LegendText = "initial position";
+            plot.ShowLegend();
 
             if (title is not null)
             {
@@ -37,17 +42,17 @@ namespace Celica
 
             ShowPlot(plot);
         }
-        public static void Plot2D(IEnumerable<IEnumerable<StateEpoch>> trajectories, Plot? plot = null, int? sampleInterval = null, string? title = null)
+        public static void Plot2D(IEnumerable<IEnumerable<StateEpoch>> trajectories, Plot? plot = null, int? sampleInterval = null, string? title = null, string[]? seriesNames = null)
         {
-            Plot2D(trajectories.Select(traj => traj.Select(se => se.State)), plot, sampleInterval, title);
+            Plot2D(trajectories.Select(traj => traj.Select(se => se.State)), plot, sampleInterval, title, seriesNames);
         }
-        public static void Plot2D(IEnumerable<State> trajectory, Plot? plot = null, int? sampleInterval = null, string? title = null)
+        public static void Plot2D(IEnumerable<State> trajectory, Plot? plot = null, int? sampleInterval = null, string? title = null, string? seriesName = null)
         {
-            Plot2D([trajectory], plot, sampleInterval, title);
+            Plot2D([trajectory], plot, sampleInterval, title, seriesName is not null ? [seriesName] : null);
         }
-        public static void Plot2D(IEnumerable<StateEpoch> trajectory, Plot? plot = null, int? sampleInterval = null, string? title = null)
+        public static void Plot2D(IEnumerable<StateEpoch> trajectory, Plot? plot = null, int? sampleInterval = null, string? title = null, string? seriesName = null)
         {
-            Plot2D(trajectory.Select(se => se.State), plot, sampleInterval, title);
+            Plot2D(trajectory.Select(se => se.State), plot, sampleInterval, title, seriesName);
         }
 
         static void ShowPlot(Plot plot)
